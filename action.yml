@@ -1,0 +1,29 @@
+---
+name: OMC Docs
+description: Publishes our API docs to our internal website at https://abc.omc.io
+inputs:
+  bucket:
+    description: the s3 bucket to push to
+    required: true
+    default: packages.omc.io
+  doc_path:
+    description: the path to push to S3
+    required: true
+  doc_command:
+    description: the command to run to generate docs
+    required: true
+    default: bin/doc
+  aws_access_key_id:
+    required: true
+  aws_secret_access_key:
+    required: true
+runs:
+  using: docker
+  image: Dockerfile
+  env:
+    AWS_ACCESS_KEY_ID: ${{ inputs.aws_access_key_id }}
+    AWS_SECRET_ACCESS_KEY: ${{ inputs.aws_secret_access_key }}
+  args: 
+    - ${{ inputs.doc_command }}
+    - ${{ inputs.doc_path }}
+    - ${{ inputs.bucket }}
