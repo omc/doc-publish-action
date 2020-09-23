@@ -9,6 +9,9 @@ DOC_PATH=$2
 BUCKET=$3
 PROJECT_NAME=$4
 
+echo $GITHUB_WORKSPACE
+echo $(pwd)
+
 # Run the doc command
 $DOC_COMMAND
 
