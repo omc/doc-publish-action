@@ -5,7 +5,10 @@ inputs:
   bucket:
     description: the s3 bucket to push to
     required: true
-    default: packages.omc.io
+    default: api-docs.omc.ioio
+  project_name:
+    description: the folder to store these docs into
+    required: true
   doc_path:
     description: the path to push to S3
     required: true
@@ -23,7 +26,8 @@ runs:
   env:
     AWS_ACCESS_KEY_ID: ${{ inputs.aws_access_key_id }}
     AWS_SECRET_ACCESS_KEY: ${{ inputs.aws_secret_access_key }}
-  args: 
+  args:
     - ${{ inputs.doc_command }}
     - ${{ inputs.doc_path }}
     - ${{ inputs.bucket }}
+    - ${{ inputs.project_name }}
