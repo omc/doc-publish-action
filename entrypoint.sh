@@ -12,6 +12,8 @@ PROJECT_NAME=$4
 # Run the doc command
 # $DOC_COMMAND
 
+aws s3 ls "s3://${BUCKET}"
+
 # Copy the contents
 echo "aws s3 cp --recursive $DOC_PATH 's3://${BUCKET}/${PROJECT_NAME}'"
 aws s3 cp --recursive $DOC_PATH "s3://${BUCKET}/${PROJECT_NAME}"
