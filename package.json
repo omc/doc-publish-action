@@ -1,0 +1,27 @@
+{
+  "name": "doc-publish-action",
+  "version": "1.0.0",
+  "description": "An easy way for us to update our documentation repository.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omc/doc-publish-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/omc/doc-publish-action/issues"
+  },
+  "homepage": "https://github.com/omc/doc-publish-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/exec": "^1.0.4",
+    "@actions/github": "^4.0.0",
+    "@actions/glob": "^0.1.0",
+    "aws-sdk": "^2.759.0"
+  }
+}
