@@ -32,6 +32,7 @@ async function uploadDocs() {
   for await (const file of globber.globGenerator()) {
     // if this file exists and is a file
     if(fs.existsSync(file) && fs.lstatSync(file).isFile()) {
+      console.log("Uploading file", file);
       // no option, so this is a buffer.
       // if aws no likey, add , 'utf8' to the param args
       let fileContent = fs.readFileSync(file);
