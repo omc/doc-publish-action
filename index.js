@@ -13,6 +13,12 @@ try {
   // execute the desired command, and wait for it to complete
   await exec.exec(docCommand);
 
+  // Configure AWS
+  let key = core.getInput('aws_access_key_id');
+  let secret = core.getInput('aws_secret_access_key');
+  AWS.config.credentials = new AWS.Credentials(key, secret);
+  AWS.config.region = core.getInput('aws_default_region');
+
   // Upload the contents
   // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html
   var s3 = new AWS.S3();

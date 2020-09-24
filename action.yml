@@ -5,7 +5,7 @@ inputs:
   bucket:
     description: the s3 bucket to push to
     required: true
-    default: api-docs.omc.ioio
+    default: api-docs.omc.io
   project_name:
     description: the folder to store these docs into
     required: true
@@ -20,10 +20,9 @@ inputs:
     required: true
   aws_secret_access_key:
     required: true
+  aws_default_region:
+    required: false
+    default: us-east-1
 runs:
   using: node12
   main: index.js
-  env:
-    AWS_ACCESS_KEY_ID: ${{ inputs.aws_access_key_id }}
-    AWS_SECRET_ACCESS_KEY: ${{ inputs.aws_secret_access_key }}
-    AWS_DEFAULT_REGION: us-east-1
