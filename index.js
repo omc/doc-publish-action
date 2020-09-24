@@ -5,13 +5,13 @@ const glob = require('@actions/glob');
 const fs = require('fs');
 const { runInContext } = require('vm');
 
-export async function buildDocs() {
+async function buildDocs() {
   const docCommand = core.getInput('doc_command');
   // execute the desired command, and wait for it to complete
   await exec.exec(docCommand);
 }
 
-export async function uploadDocs() {
+async function uploadDocs() {
   const bucket = core.getInput('bucket');
   const projectName = core.getInput('project_name');
   const docPath = core.getInput('doc_path');
@@ -46,7 +46,7 @@ export async function uploadDocs() {
 }
 
 
-export async function run() {
+async function run() {
   try {
     await buildDocs();
     await uploadDocs();
