@@ -26,6 +26,7 @@ async function uploadDocs() {
   // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html
   var s3 = new AWS.S3();
   // enumerate all files in a given directory
+  console.log("Uploading files from ", docPath, 'to', bucket);
   const patterns = [`${docPath}/**/*`];
   const globber = await glob.create(patterns.join('\n'));
   var promises = [];
@@ -46,6 +47,7 @@ async function uploadDocs() {
     }
   }
 
+  console.log('Waiting for', promises.length, 'promises to complete');
   await Promise.all(promises);
 }
 
@@ -57,6 +59,7 @@ async function run() {
   } catch (e) {
     core.setFailed(e.message);
   }
+  console.log('done');
 }
 
 if (__filename.endsWith('index.js')) { run() }
