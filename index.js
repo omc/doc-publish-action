@@ -48,7 +48,8 @@ async function uploadDocs() {
   }
 
   console.log('Waiting for', promises.length, 'promises to complete');
-  await Promise.all(promises);
+  let results = await Promise.all(promises);
+  console.log('results:', results);
 }
 
 
