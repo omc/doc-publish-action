@@ -40,7 +40,7 @@ async function uploadDocs() {
       // no option, so this is a buffer.
       // if aws no likey, add , 'utf8' to the param args
       let fileContent = fs.readFileSync(file);
-      let keyPath = file.slice(workDir + 1);
+      let keyPath = file.slice(workDir.length + 1);
       console.log('Key', keyPath);
       // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property
       let promise =  s3.putObject({
