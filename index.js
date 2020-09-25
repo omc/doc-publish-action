@@ -45,12 +45,13 @@ async function uploadDocs() {
       let fileContent = fs.readFileSync(file);
       // Add 1 to remove the last / so I can add it on later.
       let keyPath = file.slice(docDir.length + 1);
-      console.log('Key', keyPath);
+      let key = `${projectName}/${keyPath}`;
+      console.log('Key', key);
       // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property
       let promise =  s3.putObject({
         Body: fileContent,
         Bucket: bucket,
-        Key: `${projectName}/${keyPath}`
+        Key: key
       });
       promises.push(promise.on('success', function(response){
         console.log('File',file,'Success');
