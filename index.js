@@ -37,13 +37,15 @@ async function uploadDocs() {
       // no option, so this is a buffer.
       // if aws no likey, add , 'utf8' to the param args
       let fileContent = fs.readFileSync(file);
-      // // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property
+      // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property
       let promise =  s3.putObject({
         Body: fileContent,
         Bucket: bucket,
         Key: `${projectName}/${file}`
       });
-      promises.push(promise);
+      promises.push(promise.on('success', function(response){
+        console.log('File',file,'Success')
+      }).send());
     }
   }
 
