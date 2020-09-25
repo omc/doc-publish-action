@@ -3,7 +3,7 @@ const exec = require('@actions/exec');
 const AWS = require('aws-sdk');
 const glob = require('@actions/glob');
 const fs = require('fs');
-const { runInContext } = require('vm');
+const path = require('path');
 
 async function buildDocs() {
   const docCommand = core.getInput('doc_command');
@@ -12,12 +12,15 @@ async function buildDocs() {
 }
 
 async function uploadDocs() {
-  const workDir = process.env.GITHUB_WORKSPACE;
-  console.log('workDir', workDir);
-
   const bucket = core.getInput('bucket');
   const projectName = core.getInput('project_name');
   const docPath = core.getInput('doc_path');
+
+  const workDir = process.env.GITHUB_WORKSPACE;
+  core.debug(`workDir: ${workDir}`);
+  let docDir = path.join(workDir, docPath);
+  console.log('docDir', docDir);
+
 
   // Configure AWS
   let key = core.getInput('aws_access_key_id');
@@ -29,7 +32,7 @@ async function uploadDocs() {
   // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html
   var s3 = new AWS.S3();
   // enumerate all files in a given directory
-  console.log("Uploading files from ", docPath, 'to', bucket);
+  core.debug(`Uploading files from '${docPath}' to '${bucket}'`)
   const patterns = [`${docPath}/**/*`];
   const globber = await glob.create(patterns.join('\n'));
   var promises = [];
@@ -40,8 +43,8 @@ async function uploadDocs() {
       // no option, so this is a buffer.
       // if aws no likey, add , 'utf8' to the param args
       let fileContent = fs.readFileSync(file);
-      // TODO: just path joining logic to make this more robusto
-      let keyPath = file.slice(workDir.length + 1 + docPath.length);
+      // Add 1 to remove the last / so I can add it on later.
+      let keyPath = file.slice(docDir.length + 1);
       console.log('Key', keyPath);
       // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property
       let promise =  s3.putObject({
