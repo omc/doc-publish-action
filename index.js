@@ -12,6 +12,7 @@ async function buildDocs() {
 }
 
 async function uploadDocs() {
+  const workDir = process.env.GITHUB_WORKSPACE;
   const bucket = core.getInput('bucket');
   const projectName = core.getInput('project_name');
   const docPath = core.getInput('doc_path');
@@ -37,11 +38,12 @@ async function uploadDocs() {
       // no option, so this is a buffer.
       // if aws no likey, add , 'utf8' to the param args
       let fileContent = fs.readFileSync(file);
+      let keyPath = file.slice(workDir + 1);
       // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property
       let promise =  s3.putObject({
         Body: fileContent,
         Bucket: bucket,
-        Key: `${projectName}/${file}`
+        Key: `${projectName}/${keyPath}`
       });
       promises.push(promise.on('success', function(response){
         console.log('File',file,'Success')
@@ -57,8 +59,13 @@ async function uploadDocs() {
 
 async function run() {
   try {
+    core.startGroup('buildDocs');
     await buildDocs();
+    core.endGroup();
+
+    core.startGroup('uploadDocs');
     await uploadDocs();
+    core.endGroup();
   } catch (e) {
     core.setFailed(e.message);
   }
