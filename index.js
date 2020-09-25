@@ -13,6 +13,8 @@ async function buildDocs() {
 
 async function uploadDocs() {
   const workDir = process.env.GITHUB_WORKSPACE;
+  console.log('workDir', workDir);
+
   const bucket = core.getInput('bucket');
   const projectName = core.getInput('project_name');
   const docPath = core.getInput('doc_path');
@@ -39,6 +41,7 @@ async function uploadDocs() {
       // if aws no likey, add , 'utf8' to the param args
       let fileContent = fs.readFileSync(file);
       let keyPath = file.slice(workDir + 1);
+      console.log('Key', keyPath);
       // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property
       let promise =  s3.putObject({
         Body: fileContent,
@@ -46,7 +49,7 @@ async function uploadDocs() {
         Key: `${projectName}/${keyPath}`
       });
       promises.push(promise.on('success', function(response){
-        console.log('File',file,'Success')
+        console.log('File',file,'Success');
       }).send());
     }
   }
